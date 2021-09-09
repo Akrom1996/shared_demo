@@ -12,7 +12,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // TextEditingController controller = TextEditingController()..text="JoneWilliams@gmail.com";
+  TextEditingController controller1 = TextEditingController();
+  TextEditingController controller2 = TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
@@ -58,8 +59,8 @@ class _HomePageState extends State<HomePage> {
                     fontWeight: FontWeight.w400),
               ),
             ),
-            InputField(isName: true),
-            InputField(isName: false),
+            InputField(isName: true, controller: controller1),
+            InputField(isName: false, controller: controller2),
             Container(
               width: double.infinity,
               margin: EdgeInsets.symmetric(horizontal: 16),
@@ -91,13 +92,13 @@ class _HomePageState extends State<HomePage> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     primary: Colors.indigo[700], shape: StadiumBorder()),
-                onPressed: ()async {
+                onPressed: () async {
                   var user =
-                      User.fromJson({"userName": "Akrom", "password": "123"});
-                //   Prefs.saveUser(user);
-                //  User userLoad = await Prefs.loadUser();
-                //  print(userLoad.userName);
-                //  print(userLoad.password);
+                      User.fromJson({"userName": controller1.text, "password": controller2.text});
+                  Prefs.saveUser(user);
+                  User userLoad = await Prefs.loadUser();
+                  print(userLoad.userName);
+                  print(userLoad.password);
                 },
                 child: Text(
                   "LOG IN",
@@ -174,7 +175,8 @@ class _HomePageState extends State<HomePage> {
 
 class InputField extends StatelessWidget {
   final isName;
-  const InputField({Key? key, this.isName}) : super(key: key);
+  final controller;
+  const InputField({Key? key, this.isName, this.controller}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +191,7 @@ class InputField extends StatelessWidget {
       ),
       child: TextFormField(
         // initialValue: isName ? "JoneWilliams@gmail.com" : null,
-        // controller: controller,
+        controller: controller,
         textAlignVertical: TextAlignVertical.center,
         cursorHeight: 26,
 
